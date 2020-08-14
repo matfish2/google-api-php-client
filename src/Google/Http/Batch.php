@@ -58,7 +58,7 @@ class Google_Http_Batch
     $this->requests[$key] = $request;
   }
 
-  public function execute()
+  public function execute($service = '')
   {
     $body = '';
 
@@ -72,6 +72,11 @@ class Google_Http_Batch
     $body .= "--{$this->boundary}--";
 
     $url = $this->root_url . '/' . $this->batch_path;
+
+    if ($service) {
+        $url.="/" . $service;
+    }
+    
     $httpRequest = new Google_Http_Request($url, 'POST');
     $httpRequest->setRequestHeaders(
         array('Content-Type' => 'multipart/mixed; boundary=' . $this->boundary)
